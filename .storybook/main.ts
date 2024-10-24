@@ -1,5 +1,6 @@
 import type { StorybookConfig } from "@storybook/react-webpack5";
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const path = require("path");
 
 const config: StorybookConfig = {
   stories: [
@@ -34,6 +35,12 @@ const config: StorybookConfig = {
   webpackFinal: async (config) => {
     if (config.plugins) {
       config.plugins.push(new NodePolyfillPlugin());
+    }
+    if (config.resolve) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "@": path.resolve(__dirname, "../"), // Adjust the path as needed
+      };
     }
     return config;
   },
